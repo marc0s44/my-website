@@ -1,7 +1,8 @@
-package com.mywebsite.users;
+package com.mywebsite.users.services;
 
-import com.mywebsite.db.UsersDAO;
-import com.mywebsite.users.validators.userValidator;
+import com.mywebsite.users.WebsiteUser;
+import com.mywebsite.users.db.UsersDAO;
+import com.mywebsite.users.db.WebsiteUserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,33 +11,30 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class websiteUserServiceImpl implements websiteUserService {
+public class WebsiteUserServiceImpl implements WebsiteUserService {
 
     private UsersDAO usersDAO;
-    private userValidator userValidator;
 
     @Autowired
-    public websiteUserServiceImpl(UsersDAO usersDAO, com.mywebsite.users.validators.userValidator userValidator) {
+    public WebsiteUserServiceImpl(UsersDAO usersDAO) {
         this.usersDAO = usersDAO;
-        this.userValidator = userValidator;
     }
 
     @Transactional
     @Override
-    public List<websiteUser> getUsers() {
+    public List<WebsiteUserDAO> getUsers() {
         return usersDAO.getUsers();
     }
 
     @Transactional
     @Override
-    public websiteUser addUser(websiteUser user) {
-        userValidator.checkIfUserSetProperly(user);
+    public WebsiteUser addUser(WebsiteUser user) {
         return usersDAO.addUser(user);
     }
 
     @Transactional
     @Override
-    public websiteUser getUser(UUID id) {
+    public WebsiteUserDAO getUser(UUID id) {
         return usersDAO.getUser(id);
     }
 

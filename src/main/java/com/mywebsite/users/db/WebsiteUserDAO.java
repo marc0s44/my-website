@@ -1,4 +1,4 @@
-package com.mywebsite.users;
+package com.mywebsite.users.db;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity
 @Data
 @Table(name = "users")
-public class websiteUser {
+public class WebsiteUserDAO {
 
     @Id
     @Type(type = "pg-uuid")
