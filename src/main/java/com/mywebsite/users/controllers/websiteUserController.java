@@ -3,8 +3,10 @@ package com.mywebsite.users.controllers;
 import com.mywebsite.users.websiteUser;
 import com.mywebsite.users.websiteUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,8 +26,12 @@ public class websiteUserController {
 
     @PostMapping("/users")
     public ResponseEntity<?> addUser(@RequestBody websiteUser user) {
-        websiteUserService.addUser(user);
-        return ResponseEntity.ok(user);
+        try {
+            websiteUserService.addUser(user);
+            return ResponseEntity.ok(user);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
     }
 
     @GetMapping("/users/{id}")

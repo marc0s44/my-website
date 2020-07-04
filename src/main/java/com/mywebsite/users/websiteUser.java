@@ -22,6 +22,9 @@ public class websiteUser {
     private String name;
 
     @Column
+    private String surname;
+
+    @Column
     private String password;
 
     @Column(unique = true)

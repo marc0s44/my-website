@@ -1,6 +1,7 @@
 package com.mywebsite.users;
 
 import com.mywebsite.db.UsersDAO;
+import com.mywebsite.users.validators.userValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +12,14 @@ import java.util.UUID;
 @Service
 public class websiteUserServiceImpl implements websiteUserService {
 
-    @Autowired
     private UsersDAO usersDAO;
+    private userValidator userValidator;
+
+    @Autowired
+    public websiteUserServiceImpl(UsersDAO usersDAO, com.mywebsite.users.validators.userValidator userValidator) {
+        this.usersDAO = usersDAO;
+        this.userValidator = userValidator;
+    }
 
     @Transactional
     @Override
@@ -23,6 +30,7 @@ public class websiteUserServiceImpl implements websiteUserService {
     @Transactional
     @Override
     public websiteUser addUser(websiteUser user) {
+        userValidator.checkIfUserSetProperly(user);
         return usersDAO.addUser(user);
     }
 
