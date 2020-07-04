@@ -1,6 +1,7 @@
 package com.mywebsite.users.db;
 
 import com.mywebsite.users.WebsiteUser;
+import com.mywebsite.validators.EmailVerifier;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
@@ -33,16 +34,6 @@ public class UsersDAOImpl implements UsersDAO {
         return user;
     }
 
-    private WebsiteUserDAO createWebsiteUserDAO(WebsiteUser user) {
-        WebsiteUserDAO userDAO = new WebsiteUserDAO();
-        userDAO.setName(user.getName());
-        userDAO.setSurname(user.getSurname());
-        userDAO.setPassword(user.getPassword()); // TODO: ADD PASSWORD HASHING WITH BCrypt(Spring Security);
-        userDAO.setEmail(user.getEmail());
-        return userDAO;
-    }
-
-
     @Override
     public WebsiteUserDAO getUser(UUID id) {
         Session session = entityManager.unwrap(Session.class);
@@ -66,6 +57,18 @@ public class UsersDAOImpl implements UsersDAO {
             return true;
         }
         throw new IllegalArgumentException("Email " + email + " already exists");
+    }
+
+    private WebsiteUserDAO createWebsiteUserDAO(WebsiteUser user) {
+        WebsiteUserDAO userDAO = new WebsiteUserDAO();
+        userDAO.setName(user.getName());
+        userDAO.setSurname(user.getSurname());
+        if(!EmailVerifier.isEmailValid(user.getEmail())) {
+            throw new IllegalArgumentException("Email has wrong structure");
+        }
+        userDAO.setPassword(user.getPassword()); // TODO: ADD PASSWORD HASHING WITH BCrypt(Spring Security);
+        userDAO.setEmail(user.getEmail());
+        return userDAO;
     }
 
 
