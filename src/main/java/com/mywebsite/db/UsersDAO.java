@@ -9,4 +9,5 @@ public interface UsersDAO {
     List<websiteUser> getUsers();
     websiteUser addUser(websiteUser user);
     websiteUser getUser(UUID id);
+    void deleteUser(UUID id);
 }

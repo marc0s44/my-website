@@ -33,4 +33,10 @@ public class websiteUserController {
         websiteUser user = websiteUserService.getUser(id);
         return ResponseEntity.ok(user);
     }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
+        websiteUserService.deleteUser(id);
+        return ResponseEntity.ok().build();
+    }
 }

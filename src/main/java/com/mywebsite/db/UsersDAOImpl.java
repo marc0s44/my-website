@@ -37,5 +37,12 @@ public class UsersDAOImpl implements UsersDAO {
         return session.get(websiteUser.class, id);
     }
 
+    @Override
+    public void deleteUser(UUID id) {
+        Session session = entityManager.unwrap(Session.class);
+        websiteUser userToDelete = session.get(websiteUser.class, id);
+        session.delete(userToDelete);
+    }
+
 
 }

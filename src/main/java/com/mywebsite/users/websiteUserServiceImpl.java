@@ -31,4 +31,10 @@ public class websiteUserServiceImpl implements websiteUserService {
     public websiteUser getUser(UUID id) {
         return usersDAO.getUser(id);
     }
+
+    @Transactional
+    @Override
+    public void deleteUser(UUID id) {
+        usersDAO.deleteUser(id);
+    }
 }
