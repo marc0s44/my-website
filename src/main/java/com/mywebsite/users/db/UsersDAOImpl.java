@@ -1,5 +1,6 @@
 package com.mywebsite.users.db;
 
+import com.mywebsite.exceptions.UserNotFoundException;
 import com.mywebsite.users.WebsiteUser;
 import com.mywebsite.validators.EmailVerifier;
 import org.hibernate.Session;
@@ -15,8 +16,12 @@ import java.util.UUID;
 @Repository
 public class UsersDAOImpl implements UsersDAO {
 
-    @Autowired
     private EntityManager entityManager;
+
+    @Autowired
+    public UsersDAOImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
     public List<WebsiteUserDAO> getUsers() {
@@ -36,7 +41,11 @@ public class UsersDAOImpl implements UsersDAO {
     @Override
     public WebsiteUserDAO getUser(UUID id) {
         Session session = entityManager.unwrap(Session.class);
-        return session.get(WebsiteUserDAO.class, id);
+        WebsiteUserDAO user = session.get(WebsiteUserDAO.class, id);
+        if(user == null) {
+            throw new UserNotFoundException("There is no user with id " + id);
+        }
+        return user;
     }
 
     @Override

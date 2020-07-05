@@ -1,6 +1,7 @@
 package com.mywebsite.exceptions.handlers;
 
-import com.mywebsite.com.mywebsite.exceptions.ApiError;
+import com.mywebsite.exceptions.ApiError;
+import com.mywebsite.exceptions.UserNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,13 @@ public class EmailTakenHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
+    @ExceptionHandler(value = UserNotFoundException.class)
+    protected ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex, WebRequest request) {
+        ApiError apiError = new ApiError();
+        apiError.setReason(Collections.singletonList(ex.getMessage()));
+        return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<String> errors = ex.getBindingResult().getAllErrors().stream().map(o -> o.getDefaultMessage()).collect(Collectors.toList());
@@ -42,4 +50,5 @@ public class EmailTakenHandler extends ResponseEntityExceptionHandler {
         apiError.setReason(Collections.singletonList("Missing request body"));
         return handleExceptionInternal(ex,apiError , headers, status, request);
     }
+
 }

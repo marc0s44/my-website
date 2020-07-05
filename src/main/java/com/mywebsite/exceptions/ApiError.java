@@ -1,4 +1,4 @@
-package com.mywebsite.com.mywebsite.exceptions;
+package com.mywebsite.exceptions;
 
 import lombok.Data;
 
