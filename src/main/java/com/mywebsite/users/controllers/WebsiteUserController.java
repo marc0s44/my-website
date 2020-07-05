@@ -4,6 +4,7 @@ import com.mywebsite.users.WebsiteUser;
 import com.mywebsite.users.db.WebsiteUserDAO;
 import com.mywebsite.users.services.WebsiteUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class WebsiteUserController {
     public ResponseEntity<?> addUser(@Valid @RequestBody WebsiteUser user) {
 
         websiteUserService.addUser(user);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/users/{id}")

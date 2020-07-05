@@ -28,8 +28,8 @@ public class WebsiteUserServiceImpl implements WebsiteUserService {
 
     @Transactional
     @Override
-    public WebsiteUser addUser(WebsiteUser user) {
-        return usersDAO.addUser(user);
+    public void addUser(WebsiteUser user) {
+        usersDAO.addUser(user);
     }
 
     @Transactional
