@@ -52,6 +52,9 @@ public class UsersDAOImpl implements UsersDAO {
     public void deleteUser(UUID id) {
         Session session = entityManager.unwrap(Session.class);
         WebsiteUserDAO userToDelete = session.get(WebsiteUserDAO.class, id);
+        if(userToDelete == null) {
+            throw new UserNotFoundException("There is no user with id " + id);
+        }
         session.delete(userToDelete);
     }
 
