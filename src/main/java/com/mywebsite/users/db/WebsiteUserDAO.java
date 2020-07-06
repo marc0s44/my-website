@@ -29,4 +29,7 @@ public class WebsiteUserDAO {
 
     @Column(unique = true)
     private String email;
+
+    @Column
+    private String role = "user";
 }

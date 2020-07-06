@@ -16,7 +16,7 @@ import java.util.UUID;
 @Repository
 public class UsersDAOImpl implements UsersDAO {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     @Autowired
     public UsersDAOImpl(EntityManager entityManager) {
@@ -32,9 +32,9 @@ public class UsersDAOImpl implements UsersDAO {
     }
 
     @Override
-    public void addUser(WebsiteUser user) {
+    public void addUser(WebsiteUser user, String role) {
         Session session = entityManager.unwrap(Session.class);
-        WebsiteUserDAO userDAO = createWebsiteUserDAO(user);
+        WebsiteUserDAO userDAO = createWebsiteUserDAO(user, role);
         session.saveOrUpdate(userDAO);
     }
 
@@ -68,7 +68,7 @@ public class UsersDAOImpl implements UsersDAO {
         }
     }
 
-    private WebsiteUserDAO createWebsiteUserDAO(WebsiteUser user) {
+    private WebsiteUserDAO createWebsiteUserDAO(WebsiteUser user, String role) {
         WebsiteUserDAO userDAO = new WebsiteUserDAO();
         userDAO.setName(user.getName().trim());
         userDAO.setSurname(user.getSurname().trim());
@@ -78,6 +78,7 @@ public class UsersDAOImpl implements UsersDAO {
         verifyIfEmailTaken(user.getEmail());
         userDAO.setPassword(user.getPassword()); // TODO: ADD PASSWORD HASHING WITH BCrypt(Spring Security);
         userDAO.setEmail(user.getEmail());
+        userDAO.setRole(role);
         return userDAO;
     }
 

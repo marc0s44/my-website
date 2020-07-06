@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface WebsiteUserService {
     List<WebsiteUserDAO> getUsers();
-    void addUser(WebsiteUser user);
+    void addUser(WebsiteUser user, String role);
     WebsiteUserDAO getUser(UUID id);
     void deleteUser(UUID id);
 }

@@ -28,7 +28,7 @@ public class WebsiteUserController {
     @PostMapping("/users")
     public ResponseEntity<?> addUser(@Valid @RequestBody WebsiteUser user) {
 
-        websiteUserService.addUser(user);
+        websiteUserService.addUser(user, "user");
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
