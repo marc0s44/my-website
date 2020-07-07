@@ -24,7 +24,7 @@ public class WebsiteAdminController {
     }
 
     @PostMapping("/admins")
-    public ResponseEntity<?> addAdminUser(@Valid @RequestBody WebsiteUser user) {
+    public ResponseEntity<?> register(@Valid @RequestBody WebsiteUser user) {
         websiteUserService.addUser(user, "admin");
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class WebsiteUserController {
 
     @Autowired
@@ -26,7 +27,7 @@ public class WebsiteUserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<?> addUser(@Valid @RequestBody WebsiteUser user) {
+    public ResponseEntity<?> register(@Valid @RequestBody WebsiteUser user) {
 
         websiteUserService.addUser(user, "user");
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -41,6 +42,12 @@ public class WebsiteUserController {
     @DeleteMapping("/users/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
         websiteUserService.deleteUser(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/users")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody WebsiteUser user) {
+        websiteUserService.updateUser(user, "user");
         return ResponseEntity.ok().build();
     }
 }

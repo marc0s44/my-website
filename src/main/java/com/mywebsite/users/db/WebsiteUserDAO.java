@@ -31,5 +31,5 @@ public class WebsiteUserDAO {
     private String email;
 
     @Column
-    private String role = "user";
+    private String role;
 }

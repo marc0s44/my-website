@@ -43,4 +43,10 @@ public class WebsiteUserServiceImpl implements WebsiteUserService {
     public void deleteUser(UUID id) {
         usersDAO.deleteUser(id);
     }
+
+    @Transactional
+    @Override
+    public void updateUser(WebsiteUser user, String role) {
+        usersDAO.updateUser(user, role);
+    }
 }

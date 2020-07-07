@@ -58,6 +58,26 @@ public class UsersDAOImpl implements UsersDAO {
         session.delete(userToDelete);
     }
 
+    @Override
+    public void updateUser(WebsiteUser user, String role) {
+        Session session = entityManager.unwrap(Session.class);
+        WebsiteUserDAO userToUpdate = getUserByEmail(user.getEmail());
+        if(userToUpdate == null) {
+            throw new UserNotFoundException("There is no such user");
+        }
+        userToUpdate.setName(user.getName());
+        userToUpdate.setSurname(user.getSurname());
+        userToUpdate.setPassword(user.getPassword());
+        if (!EmailVerifier.isEmailValid(user.getEmail())) {
+            throw new IllegalArgumentException("Email has wrong structure");
+        }
+        if(!userToUpdate.getEmail().equals(user.getEmail())) {
+            verifyIfEmailTaken(user.getEmail());
+        }
+        userToUpdate.setRole(role);
+        session.update(userToUpdate);
+    }
+
     private void verifyIfEmailTaken(String email) {
         Session session = entityManager.unwrap(Session.class);
         NativeQuery<String> sqlQuery = session.createSQLQuery("SELECT email FROM users WHERE email=:email");
@@ -80,6 +100,15 @@ public class UsersDAOImpl implements UsersDAO {
         userDAO.setEmail(user.getEmail());
         userDAO.setRole(role);
         return userDAO;
+    }
+
+    private WebsiteUserDAO getUserByEmail(String email) {
+        Session session = entityManager.unwrap(Session.class);
+        NativeQuery<String> sqlQuery = session.createSQLQuery("SELECT CAST(id as VARCHAR) AS VARCHAR FROM users WHERE email=:email");
+        sqlQuery.setParameter("email", email);
+        UUID userId = UUID.fromString(sqlQuery.getSingleResult());
+        WebsiteUserDAO user = session.get(WebsiteUserDAO.class, userId);
+        return user;
     }
 
 

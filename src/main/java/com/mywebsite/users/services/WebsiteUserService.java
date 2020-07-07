@@ -11,4 +11,5 @@ public interface WebsiteUserService {
     void addUser(WebsiteUser user, String role);
     WebsiteUserDAO getUser(UUID id);
     void deleteUser(UUID id);
+    void updateUser(WebsiteUser user, String role);
 }
