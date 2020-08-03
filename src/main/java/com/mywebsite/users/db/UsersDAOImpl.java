@@ -102,10 +102,16 @@ public class UsersDAOImpl implements UsersDAO {
         return userDAO;
     }
 
-    private WebsiteUserDAO getUserByEmail(String email) {
+    public WebsiteUserDAO getUserByEmail(String email) {
         Session session = entityManager.unwrap(Session.class);
+        if(!EmailVerifier.isEmailValid(email)) {
+            throw new IllegalArgumentException("Email has wrong structure");
+        }
         NativeQuery<String> sqlQuery = session.createSQLQuery("SELECT CAST(id as VARCHAR) AS VARCHAR FROM users WHERE email=:email");
         sqlQuery.setParameter("email", email);
+        if(sqlQuery.getResultList().isEmpty()) {
+            throw new UserNotFoundException("User does not exist");
+        }
         UUID userId = UUID.fromString(sqlQuery.getSingleResult());
         WebsiteUserDAO user = session.get(WebsiteUserDAO.class, userId);
         return user;
