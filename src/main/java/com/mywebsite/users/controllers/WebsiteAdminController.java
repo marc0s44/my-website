@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/admins")
 public class WebsiteAdminController {
 
-    private WebsiteUserService websiteUserService;
+    private final WebsiteUserService websiteUserService;
 
     @Autowired
     public WebsiteAdminController(WebsiteUserService websiteUserService) {
         this.websiteUserService = websiteUserService;
     }
 
-    @PostMapping("/admins")
+    @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody WebsiteUser user) {
         websiteUserService.addUser(user, "admin");
         return ResponseEntity.status(HttpStatus.CREATED).build();

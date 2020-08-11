@@ -13,33 +13,33 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/users")
 @CrossOrigin
 public class WebsiteUserController {
 
     @Autowired
     private WebsiteUserService websiteUserService;
 
-    @GetMapping("/users")
+    @GetMapping
     public ResponseEntity<?> getUsers() {
         List<WebsiteUserDAO> users = websiteUserService.getUsers();
         return ResponseEntity.ok(users);
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public ResponseEntity<?> register(@Valid @RequestBody WebsiteUser user) {
 
         websiteUserService.addUser(user, "user");
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getUser(@PathVariable UUID id) {
         WebsiteUserDAO user = websiteUserService.getUser(id);
         return ResponseEntity.ok(user);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
         websiteUserService.deleteUser(id);
         return ResponseEntity.ok().build();

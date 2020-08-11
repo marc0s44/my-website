@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class EmailTakenHandler extends ResponseEntityExceptionHandler {
+public class ExceptionHandlerAdvices extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = IllegalArgumentException.class)
     protected ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
@@ -34,6 +35,13 @@ public class EmailTakenHandler extends ResponseEntityExceptionHandler {
         ApiError apiError = new ApiError();
         apiError.setReason(Collections.singletonList(ex.getMessage()));
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(value = MissingRequestHeaderException.class)
+    protected ResponseEntity<?> handleMissingRequestHeaderException(MissingRequestHeaderException ex, WebRequest request) {
+        ApiError apiError = new ApiError();
+        apiError.setReason(Collections.singletonList(ex.getMessage()));
+        return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @Override
